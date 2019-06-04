@@ -12,6 +12,8 @@ extern theatre_T* THEATRE;
 extern keyboard_state_T* KEYBOARD_STATE;
 extern mouse_state_T* MOUSE_STATE;
 
+actor_T* weapon;
+
 
 #ifndef GL_RGBA
 #define GL_RGBA 0x1908
@@ -22,6 +24,7 @@ extern mouse_state_T* MOUSE_STATE;
 #endif
 
 float i = 0.0f;
+float distance = 0.0f;
 
 
 void custom_tick(actor_T* self)
@@ -53,14 +56,37 @@ void custom_scene_tick(scene_T* self)
     state->camera->rx += MOUSE_STATE->dy * 0.25f;
     state->camera->ry += MOUSE_STATE->dx * 0.25f;
 
-    state->camera->x -= cos(to_radians(state->camera->ry + 90.0f));
-    state->camera->z += sin(to_radians(state->camera->ry + 90.0f));
+    if (KEYBOARD_STATE->keys[GLFW_KEY_W])
+    {
+        state->camera->x -= cos(to_radians(state->camera->ry + 90.0f));
+        state->camera->z += sin(to_radians(state->camera->ry + 90.0f));
+        distance += 0.3f;
+    }
+
+    if (KEYBOARD_STATE->keys[GLFW_KEY_S])
+    {
+        state->camera->x += cos(to_radians(state->camera->ry + 90.0f));
+        state->camera->z -= sin(to_radians(state->camera->ry + 90.0f));
+    }
+
+
+    state->camera->y = -16 - (cos(distance) * 0.5f);
+
+    weapon->x = -state->camera->x + (cos(to_radians(state->camera->ry + 90.0f)) * 24.0f);
+    weapon->y = state->camera->y + 16;
+    weapon->z = -state->camera->z - (sin(to_radians(state->camera->ry + 90.0f)) * 24.0f);
+    weapon->ry = state->camera->ry + 120.0f;
+    weapon->rx = state->camera->rx + 90.0f;
+    weapon->rz = state->camera->rx + 90.0f;
+
+    //weapon->x -= ;
+    //weapon->z += ;
 }
 
 scene_T* init_scene_main()
 {
-    // creating a scene                          tick        draw
-    scene_T* s = scene_constructor(init_scene(), custom_scene_tick, (void*) 0);
+    // creating a scene                          tick               draw       dimensions
+    scene_T* s = scene_constructor(init_scene(), custom_scene_tick, (void*) 0, 3);
     s->bg_r = 154;
     s->bg_g = 55;
     s->bg_g = 200;
@@ -81,7 +107,7 @@ scene_T* init_scene_main()
             );
             a->width = 32;
             a->height = 32;
-            a->rx = to_radians(90.0f);
+            a->rx = 90.0f;
             a->texture = get_texture("res/grass.png", GL_RGB)->renderable_texture;
            
             // adding the actor to the scene 
@@ -91,6 +117,18 @@ scene_T* init_scene_main()
 
     ((state_T*)s)->camera->z = 32;
     ((state_T*)s)->camera->y = -16;
+
+    weapon = actor_constructor(
+        init_actor(),
+        0.0f, 0.0f, 0.0f,
+        (void*)0, (void*)0,
+        "weapon"    
+    );
+    weapon->width = 16;
+    weapon->height = 16;
+    weapon->texture = get_texture("res/sword.gif", GL_RGBA)->renderable_texture;
+
+    dynamic_list_append(((state_T*)s)->actors, weapon);
 
     return s;
 } 
