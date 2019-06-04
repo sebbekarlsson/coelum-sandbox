@@ -73,11 +73,11 @@ void custom_scene_tick(scene_T* self)
     state->camera->y = -16 - (cos(distance) * 0.5f);
 
     weapon->x = -state->camera->x + (cos(to_radians(state->camera->ry + 90.0f)) * 24.0f);
-    weapon->y = state->camera->y + 16;
+    weapon->y = state->camera->y + 18 + (tan(to_radians(state->camera->rx)) * 24.0f);
     weapon->z = -state->camera->z - (sin(to_radians(state->camera->ry + 90.0f)) * 24.0f);
     weapon->ry = state->camera->ry + 120.0f;
-    weapon->rx = state->camera->rx + 90.0f;
-    //weapon->rz = state->camera->rx + 90.0f;
+
+    weapon->rz = 90 + state->camera->rx;
 
     //weapon->x -= ;
     //weapon->z += ;
