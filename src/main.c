@@ -6,6 +6,8 @@
 #include <coelum/scene.h>
 #include <coelum/actor.h>
 #include <coelum/utils.h>
+#include <coelum/draw_utils.h>
+#include <coelum/scene_manager.h>
 
 
 extern theatre_T* THEATRE;
@@ -83,6 +85,19 @@ void custom_scene_tick(scene_T* self)
     //weapon->z += ;
 }
 
+void custom_actor_draw(actor_T* actor)
+{
+    actor_draw(actor);
+    scene_T* scene = scene_manager_get_current_scene(THEATRE->scene_manager);
+    state_T* state = (state_T*) scene;
+
+    draw_3D_axis(
+        actor->x, actor->y, actor->z,
+        actor->width, actor->height, actor->width,
+        state
+    );
+}
+
 scene_T* init_scene_main()
 {
     // creating a scene                          tick               draw       dimensions
@@ -102,7 +117,7 @@ scene_T* init_scene_main()
                 0.0f,
                 -z * 32,
                 custom_tick,
-                (void*) 0, // draw method
+                (void*) 0,
                 "grass"
             );
             a->width = 32;
@@ -121,7 +136,7 @@ scene_T* init_scene_main()
     weapon = actor_constructor(
         init_actor(),
         0.0f, 0.0f, 0.0f,
-        (void*)0, (void*)0,
+        (void*)0, custom_actor_draw,
         "weapon"    
     );
     weapon->width = 16;
