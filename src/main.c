@@ -29,29 +29,6 @@ float i = 0.0f;
 float distance = 0.0f;
 
 
-void custom_tick(actor_T* self)
-{
-    return;
-    if (self->y < 480.0f - 32)
-    {
-        self->dy += 0.1f;
-    }
-    else
-    {
-        if (self->dy > 1.6f)
-            self->dy -= self->dy * 1.9f;
-        else
-            self->dy = 0.0f;
-
-        self->y = 480.0f - 32;
-
-        if (KEYBOARD_STATE->keys[GLFW_KEY_SPACE])
-            self->dy -= 1.9f;
-    }
-
-    self->y += self->dy;
-}
-
 void custom_scene_tick(scene_T* self)
 {
     state_T* state = (state_T*) self;
@@ -80,9 +57,6 @@ void custom_scene_tick(scene_T* self)
     weapon->ry = state->camera->ry + 120.0f;
 
     weapon->rz = 90 + state->camera->rx;
-
-    //weapon->x -= ;
-    //weapon->z += ;
 }
 
 void custom_actor_draw(actor_T* actor)
@@ -116,7 +90,7 @@ scene_T* init_scene_main()
                 (-x * 32) + ((16 * 32) / 2),
                 0.0f,
                 -z * 32,
-                custom_tick,
+                (void*) 0,
                 (void*) 0,
                 "grass"
             );
