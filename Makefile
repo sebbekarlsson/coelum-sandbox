@@ -2,7 +2,7 @@ exec = a.out
 sources := $(wildcard src/*.c)
 sources += $(wildcard GL/src/*.c)
 objects = $(sources:.c=.o)
-flags = -g -lcoelum -lglfw -ldl -lcglm -lm -lopenal -lpthread -laudio
+flags = -g -lcoelum -lglfw -ldl -lcglm -lm -lopenal -lpthread -laudio -lobjload
 
 
 $(exec): $(objects)
