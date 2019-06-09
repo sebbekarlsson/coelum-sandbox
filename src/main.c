@@ -128,7 +128,7 @@ scene_T* init_scene_main()
 
 int main(int argc, char* argv[])
 {
-    obj = obj_load_from_file("res/teapot.obj");
+    obj = obj_load_from_file("res/house.obj");
 
     coelum_init();
 
