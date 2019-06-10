@@ -18,7 +18,7 @@ extern mouse_state_T* MOUSE_STATE;
 
 actor_T* weapon;
 obj_T* obj;
-texture_T* tex;
+unsigned int tex;
 
 
 #ifndef GL_RGBA
@@ -75,7 +75,7 @@ void custom_actor_draw(actor_T* actor)
         state
     );
 
-    draw_3D_model(obj, tex->renderable_texture, 0.0f, 0.0f, 0.0f, 255.0f, 255.0f, 255.0f, state);
+    draw_3D_model(obj, tex, 0.0f, 0.0f, 0.0f, 255.0f, 255.0f, 255.0f, state);
 }
 
 scene_T* init_scene_main()
@@ -130,11 +130,11 @@ scene_T* init_scene_main()
 
 int main(int argc, char* argv[])
 {
-    obj = obj_load_from_file("res/house.obj");
 
     coelum_init();
     
-    tex = get_texture("res/house2.png", GL_RGBA);
+    obj = obj_load_from_file("res/Wood.obj");
+    tex = get_texture("res/house2.png", GL_RGBA)->renderable_texture;
 
     scene_manager_register_scene(THEATRE->scene_manager, (scene_T*) init_scene_main());
 
