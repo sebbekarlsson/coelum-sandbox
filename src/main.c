@@ -133,10 +133,16 @@ int main(int argc, char* argv[])
 
     coelum_init();
     
-    obj = obj_load_from_file("res/Wood.obj");
+    obj_list_T* object_list = obj_load_from_file("res/house.obj");
+    obj = object_list->objects[0];
+
     tex = get_texture("res/house2.png", GL_RGBA)->renderable_texture;
 
     scene_manager_register_scene(THEATRE->scene_manager, (scene_T*) init_scene_main());
 
-    return coelum_main(argc, argv);
+    int status = coelum_main(argc, argv);
+
+    obj_list_free(object_list);
+
+    return status;
 }
