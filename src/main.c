@@ -41,23 +41,23 @@ void custom_scene_tick(scene_T* self)
 
     if (KEYBOARD_STATE->keys[GLFW_KEY_W])
     {
-        state->camera->x -= cos(to_radians(state->camera->ry + 90.0f));
-        state->camera->z += sin(to_radians(state->camera->ry + 90.0f));
+        state->camera->x -= cos(glm_rad(state->camera->ry + 90.0f));
+        state->camera->z += sin(glm_rad(state->camera->ry + 90.0f));
         distance += 0.3f;
     }
 
     if (KEYBOARD_STATE->keys[GLFW_KEY_S])
     {
-        state->camera->x += cos(to_radians(state->camera->ry + 90.0f));
-        state->camera->z -= sin(to_radians(state->camera->ry + 90.0f));
+        state->camera->x += cos(glm_rad(state->camera->ry + 90.0f));
+        state->camera->z -= sin(glm_rad(state->camera->ry + 90.0f));
     }
 
 
     state->camera->y = -16 - (cos(distance) * 0.5f);
 
-    weapon->x = -state->camera->x + (cos(to_radians(state->camera->ry + 90.0f)) * 24.0f);
-    weapon->y = state->camera->y + 18 + (tan(to_radians(state->camera->rx)) * 24.0f);
-    weapon->z = -state->camera->z - (sin(to_radians(state->camera->ry + 90.0f)) * 24.0f);
+    weapon->x = -state->camera->x + (cos(glm_rad(state->camera->ry + 90.0f)) * 24.0f);
+    weapon->y = state->camera->y + 18 + (tan(glm_rad(state->camera->rx)) * 24.0f);
+    weapon->z = -state->camera->z - (sin(glm_rad(state->camera->ry + 90.0f)) * 24.0f);
     weapon->ry = state->camera->ry + 120.0f;
 
     weapon->rz = 90 + state->camera->rx;
@@ -135,6 +135,8 @@ int main(int argc, char* argv[])
     
     obj_list_T* object_list = obj_load_from_file("res/house.obj");
     obj = object_list->objects[0];
+
+    MOUSE_STATE->input_mode = GLFW_CURSOR_DISABLED;
 
     tex = get_texture("res/house2.png", GL_RGBA)->renderable_texture;
 
