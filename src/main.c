@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
     obj_list_T* object_list = obj_load_from_file("res/house.obj");
     obj = object_list->objects[0];
 
-    MOUSE_STATE->input_mode = GLFW_CURSOR_DISABLED;
+    //MOUSE_STATE->input_mode = GLFW_CURSOR_DISABLED;
 
     tex = get_texture("res/house2.png", GL_RGBA)->renderable_texture;
 
