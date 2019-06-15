@@ -9,6 +9,7 @@
 #include <coelum/textures.h>
 #include <coelum/draw_utils.h>
 #include <coelum/scene_manager.h>
+#include <coelum/actor_light.h>
 #include <objload/obj.h>
 
 
@@ -85,6 +86,7 @@ scene_T* init_scene_main()
     s->bg_r = 154;
     s->bg_g = 55;
     s->bg_g = 200;
+    ((state_T*) s)->lighting_enabled = 1;
 
     for (int x = 0; x < 16; x++)
     {
@@ -124,6 +126,13 @@ scene_T* init_scene_main()
     weapon->texture = get_texture("res/sword.gif", GL_RGBA)->renderable_texture;
 
     dynamic_list_append(((state_T*)s)->actors, weapon);
+
+    actor_light_T* light = init_actor_light(
+        0.0f, 0.0f, -12.0f,
+        1.0f        
+    );
+
+    dynamic_list_append(((state_T*)s)->actors, light);
 
     return s;
 } 
