@@ -105,7 +105,7 @@ scene_T* init_scene_main()
             a->width = 32;
             a->height = 32;
             a->rx = 90.0f;
-            a->texture = get_texture("res/grass.png", GL_RGB)->renderable_texture;
+            a->sprite = init_sprite_from_file("res/grass.png", GL_RGB, 1.0f, a->width, a->height);
            
             // adding the actor to the scene 
             dynamic_list_append(((state_T*)s)->actors, a);
@@ -123,7 +123,7 @@ scene_T* init_scene_main()
     );
     weapon->width = 16;
     weapon->height = 16;
-    weapon->texture = get_texture("res/sword.gif", GL_RGBA)->renderable_texture;
+    weapon->sprite = init_sprite_from_file("res/sword.gif", GL_RGBA, 1.0f, weapon->width, weapon->height);
 
     dynamic_list_append(((state_T*)s)->actors, weapon);
 
