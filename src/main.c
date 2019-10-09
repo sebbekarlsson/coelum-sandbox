@@ -10,7 +10,7 @@
 #include <coelum/draw_utils.h>
 #include <coelum/scene_manager.h>
 #include <coelum/actor_light.h>
-#include <objload/obj.h>
+//#include <objload/obj.h>
 
 
 extern theatre_T* THEATRE;
@@ -18,7 +18,7 @@ extern keyboard_state_T* KEYBOARD_STATE;
 extern mouse_state_T* MOUSE_STATE;
 
 actor_T* weapon;
-obj_T* obj;
+//obj_T* obj;
 unsigned int tex;
 
 
@@ -40,26 +40,35 @@ void custom_scene_tick(scene_T* self)
     state->camera->rx += MOUSE_STATE->dy * 0.25f;
     state->camera->ry += MOUSE_STATE->dx * 0.25f;
 
+
+    state->camera->offset_x = state->camera->x;
+    state->camera->offset_y = state->camera->y;
+    state->camera->offset_z = state->camera->z;
+
     if (KEYBOARD_STATE->keys[GLFW_KEY_W])
     {
-        state->camera->x -= cos(glm_rad(state->camera->ry + 90.0f));
-        state->camera->z += sin(glm_rad(state->camera->ry + 90.0f));
+        state->camera->x += cos(glm_rad(state->camera->ry + 90));
+        state->camera->z -= sin(glm_rad(state->camera->ry + 90));
         distance += 0.3f;
     }
 
     if (KEYBOARD_STATE->keys[GLFW_KEY_S])
     {
-        state->camera->x += cos(glm_rad(state->camera->ry + 90.0f));
-        state->camera->z -= sin(glm_rad(state->camera->ry + 90.0f));
+        state->camera->x -= cos(glm_rad(state->camera->ry + 90));
+        state->camera->z += sin(glm_rad(state->camera->ry + 90));
     }
 
 
-    state->camera->y = -16 - (cos(distance) * 0.5f);
+    state->camera->y = 48 - (cos(distance) * 0.5f);
 
-    weapon->x = -state->camera->x + (cos(glm_rad(state->camera->ry + 90.0f)) * 24.0f);
-    weapon->y = state->camera->y + 18 + (tan(glm_rad(state->camera->rx)) * 24.0f);
-    weapon->z = -state->camera->z - (sin(glm_rad(state->camera->ry + 90.0f)) * 24.0f);
+    weapon->x = state->camera->x + (cos(glm_rad(state->camera->ry + 90.0f)) * 24.0f);
+    weapon->y = state->camera->y - 14 + (tan(glm_rad(state->camera->rx)) * 24.0f);
+    weapon->z = state->camera->z - (sin(glm_rad(state->camera->ry + 90.0f)) * 24.0f);
     weapon->ry = state->camera->ry + 120.0f;
+    weapon->use_offset = 1;
+    weapon->offset_x = 0;//weapon->x;
+    weapon->offset_z = 0;//weapon->z;
+    weapon->reverse = 0;
 
     weapon->rz = 90 + state->camera->rx;
 }
@@ -76,7 +85,7 @@ void custom_actor_draw(actor_T* actor)
         state
     );
 
-    draw_3D_model(obj, tex, 0.0f, 6.0f, 0.0f, 255.0f, 255.0f, 255.0f, state);
+    //draw_3D_model(obj, tex, 0.0f, 6.0f, 0.0f, 255.0f, 255.0f, 255.0f, state);
 }
 
 scene_T* init_scene_main()
@@ -113,7 +122,8 @@ scene_T* init_scene_main()
     }
 
     ((state_T*)s)->camera->z = 32;
-    ((state_T*)s)->camera->y = -16;
+    ((state_T*)s)->camera->y = 200;
+    ((state_T*)s)->camera->reverse = 0;
 
     weapon = actor_constructor(
         init_actor(),
@@ -142,8 +152,8 @@ int main(int argc, char* argv[])
 
     coelum_init();
     
-    obj_list_T* object_list = obj_load_from_file("res/house.obj");
-    obj = object_list->objects[0];
+    //obj_list_T* object_list = obj_load_from_file("res/house.obj");
+    //obj = object_list->objects[0];
 
     MOUSE_STATE->input_mode = GLFW_CURSOR_DISABLED;
 
@@ -153,7 +163,7 @@ int main(int argc, char* argv[])
 
     int status = coelum_main(argc, argv);
 
-    obj_list_free(object_list);
+    //obj_list_free(object_list);
 
     return status;
 }
